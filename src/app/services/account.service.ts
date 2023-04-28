@@ -3,49 +3,50 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 
 import { IUser } from '../modules/account/interfaces/user';
-import { IServerResponse } from '../modules/account/interfaces/serverResponse';
-import { ITokenDecode } from '../modules/account/interfaces/tokenDecode';
+import { IAuthResponse } from '../modules/account/interfaces/authResponse';
+import { IRetrieveUserResponse } from '../modules/account/interfaces/retrieveUserResponse';
 import { User } from '../modules/account/model/user';
 
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { tokenGetter } from '../modules/account/account.module';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
-  private _loggedUser$ = new BehaviorSubject<User | null>(null)
+  private _loggedUser$ = new BehaviorSubject<User | undefined>(undefined)
   public loggedUser$ = this._loggedUser$.asObservable();
 
-  private _tokenName = 'accessToken'
+  private _tokenName = 'idToken'
+  private API_KEY = 'AIzaSyARB6Tm9Gu5SxGO8xOHxIu1EGYjkX9olFs'
 
-  constructor(private _http: HttpClient, private _jwtService: JwtHelperService) {
+  public token = localStorage.getItem(this._tokenName);
 
-    const token = tokenGetter()
+  constructor(private _http: HttpClient) {
 
-    if (token) {
-      if (this._jwtService.isTokenExpired(token))
+    if (this.token) {
+      if (!this.token)
         localStorage.removeItem(this._tokenName)
       else {
-        const userData = this._jwtService.decodeToken<ITokenDecode>(token)
+        this.retrieveUsetData().subscribe({
+          next: (resp) => {
 
-        if (userData) {
-          const loadedUser = new User(
-            userData?.email,
-            (userData?.sub)
-          )
-          this._loggedUser$.next(loadedUser)
-        }
+            const user = new User(
+              resp.users[0].email,
+              resp.users[0].localId,
+            )
+
+            this._loggedUser$.next(user)
+          }
+        })
       }
     }
   }
 
-  accessUser(resp: IServerResponse) {
+  accessUser(resp: IAuthResponse) {
 
     const user = new User(
       resp.email,
-      resp.localId,
+      resp.localId
     )
 
     this._loggedUser$.next(user)
@@ -53,12 +54,12 @@ export class AccountService {
   }
 
   logout() {
-    this._loggedUser$.next(null)
+    this._loggedUser$.next(undefined)
     localStorage.removeItem(this._tokenName)
   }
 
   signUp(user: IUser) {
-    return this._http.post<IServerResponse>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCfAgixIdqrETN6ziehhuCohnZPvD7bRJ0', user,).pipe(
+    return this._http.post<IAuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${this.API_KEY}`, user,).pipe(
       tap((resp) => {
         this.accessUser(resp)
       })
@@ -66,10 +67,16 @@ export class AccountService {
   }
 
   login(user: IUser) {
-    return this._http.post<IServerResponse>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCfAgixIdqrETN6ziehhuCohnZPvD7bRJ0', user).pipe(
+    return this._http.post<IAuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.API_KEY}`, user).pipe(
       tap((resp) => {
         this.accessUser(resp)
       })
     )
+  }
+
+  retrieveUsetData(){
+    return this._http.post<IRetrieveUserResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${this.API_KEY}`, {
+      "idToken": localStorage.getItem(this._tokenName)
+    })
   }
 }

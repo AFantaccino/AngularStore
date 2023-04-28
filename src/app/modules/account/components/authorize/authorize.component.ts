@@ -45,6 +45,9 @@ export class AuthorizeComponent implements OnInit {
       })
     } else {
       this._account.signUp(this.user).subscribe({
+        next: (resp) => {
+          console.log(resp)
+        },
         error: (err) => {
           if (err.error.error.message === "EMAIL_EXISTS")
             f.form.controls['email'].setErrors({ 'emailAlreadyUsed': true })
