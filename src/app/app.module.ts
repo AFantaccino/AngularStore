@@ -3,14 +3,25 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { AccountModule } from './modules/account/account.module';
+import { ProductsModule } from './modules/products/products.module';
+import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomePageComponent,
   ],
   imports: [
+    FormsModule,
+    AccountModule,
+    ProductsModule,
+    AppRoutingModule,
     BrowserModule,
-    AppRoutingModule
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

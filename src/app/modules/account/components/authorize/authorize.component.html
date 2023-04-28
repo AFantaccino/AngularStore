@@ -1,0 +1,30 @@
+<div class="container d-flex justify-content-center">
+    <form (ngSubmit)="submit(f)" #f="ngForm">
+        <div class="form-group">
+            <label for="email">Email
+                <input type="email" name="email" id="email" class="form-control" #e="ngModel" [(ngModel)]="user.email" required email>
+            </label>
+            <small *ngIf="e.invalid && (e.dirty || e.touched)">
+                <div *ngIf="e.errors?.['required']" class="form-text text-muted">Campo Richiesto</div>
+                <div *ngIf="e.errors?.['email']" class="form-text text-muted">Inserire una email valida</div>
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="password">Password
+                <input type="password" name="password" id="password" class="form-control" #p="ngModel" [(ngModel)]="user.password" minlength="6" required>
+            </label>
+            <small *ngIf="p.invalid && (p.dirty || p.touched)">
+                <div *ngIf="p.errors?.['required']" class="form-text text-muted">Campo Richiesto</div>
+                <div *ngIf="p.errors?.['minlength']" class="form-text text-muted">Inserire Password di almeno 5 caratteri</div>
+            </small>
+        </div>
+        <div>
+            <button [disabled]="e.invalid || p.invalid" type="submit" class="btn btn-primary">Submit</button>
+            <div *ngIf="e.hasError || p.hasError">
+                <div *ngIf="e.errors?.['userNotFound']" class="alert alert-danger">Questa email non e' collegata a nessun utente</div>
+                <div *ngIf="p.errors?.['wrongPassword']" class="alert alert-danger">Password inserita non corretta</div>
+                <div *ngIf="e.errors?.['emailAlreadyUsed']" class="form-text text-muted">Questa email e' gia' collegata ad un utente</div>
+            </div>
+        </div>
+    </form>
+</div>
