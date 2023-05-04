@@ -1,6 +1,6 @@
 # Overview
 
-Pagina di un negozio fittizzio utilizzando Angular per il frontend e Firebase al lato server, 
+Pagina di un negozio fittizzio utilizzando Angular per il frontend e Firebase al lato server, <br>
 Per una live view visitare: https://afantaccino.github.io/fakeStore/
 
 # Features
