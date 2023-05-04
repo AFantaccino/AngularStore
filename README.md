@@ -6,10 +6,24 @@ Per una live view visitare: https://afantaccino.github.io/fakeStore/
 # Features
 
 - Caricamento lista di prodotti<br>
-    ![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTM1OGYwOGExZTI2YzJmMzI3YzUzMGZhMWY0YWQwYzE4NWVkOGUwNSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/oS0lzuZ5UmTg8eb339/giphy.gif)
+    ![](https://media.giphy.com/media/oS0lzuZ5UmTg8eb339/giphy.gif)
 
-- Filtraggio in categorie
+- Filtraggio in categorie<br>
+    ![](https://media.giphy.com/media/7Cb8o46bK2PWfg7qqU/giphy.gif)
 
-- Registrazione di un account e login
+- Registrazione di un account e login<br>
+    ![](https://media.giphy.com/media/1YstDKoRwbGHJmIGnc/giphy.gif)<br>
+    ![](https://media.giphy.com/media/R7jcLBbLB1GdN7LP8z/giphy.gif)
 
-- Autologin
+- Autologin<br>
+    ![](https://media.giphy.com/media/nqeXrjN6LtJrJ0WGHS/giphy.gif)
+
+# To do
+
+- Migliorare il Css
+
+- Aggiungere un chekout
+
+- Aggiungere un pagina dove visualizzare i dati dell'utente e poterli modificare
+
+- Creare un modo per controllare la scadenza del token

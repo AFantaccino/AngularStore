@@ -10,6 +10,7 @@
             <ng-container *ngIf="account.loggedUser$ | async; then loggedIn; else elseBlock"></ng-container>
 
             <ng-template #loggedIn>
+                <li class="nav-item"><a class="nav-link">{{currentUser.name}}</a></li>
                 <li class="nav-item"><a class="nav-link" (click)="account.logout()">Logout</a></li>
             </ng-template>
             

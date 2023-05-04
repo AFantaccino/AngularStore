@@ -12,8 +12,14 @@ import { AccountService } from 'src/app/services/account.service';
 export class HomePageComponent implements OnInit {
 
   categories!: ICategory[];
+  currentUser!:any
 
   constructor(private _http: HttpClient, private _cart: CartService, public account: AccountService) {
+    this.account.loggedUser$.subscribe({
+      next: (resp) => {
+      this.currentUser = resp
+      }
+    })
   }
 
   ngOnInit(): void {

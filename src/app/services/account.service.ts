@@ -27,10 +27,10 @@ export class AccountService {
         this.retrieveUsetData().subscribe({
           next: (resp) => {
             const user = new User(
+              resp.users[0].displayName,
               resp.users[0].email,
               resp.users[0].localId,
             )
-
             this._loggedUser$.next(user)
           },
           error: (err:HttpErrorResponse) => {
@@ -43,6 +43,7 @@ export class AccountService {
   accessUser(resp: IAuthResponse) {
 
     const user = new User(
+      resp.displayName,
       resp.email,
       resp.localId
     )

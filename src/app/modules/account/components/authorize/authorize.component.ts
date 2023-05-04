@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from 'src/app/services/account.service';
 import { IUser } from '../../interfaces/user';
 
@@ -11,10 +11,11 @@ import { IUser } from '../../interfaces/user';
 })
 export class AuthorizeComponent implements OnInit {
 
-  constructor(private _account: AccountService, private _activatedRoute: ActivatedRoute) {
+  constructor(private _account: AccountService, private _activatedRoute: ActivatedRoute, private _router: Router) {
   }
 
   public user: IUser = {
+    displayName: '',
     email: '',
     password: '',
     returnSecureToken: true
@@ -33,6 +34,9 @@ export class AuthorizeComponent implements OnInit {
   submit(f: NgForm) {
     if (this.alreadyAnAccount) {
       this._account.login(this.user).subscribe({
+        next: (resp) => {
+          this._router.navigate(["/home"])
+        },
         error: (err) => {
           if (err.error.error.message === "EMAIL_NOT_FOUND")
             f.form.controls['email'].setErrors({ 'userNotFound': true })
@@ -46,7 +50,7 @@ export class AuthorizeComponent implements OnInit {
     } else {
       this._account.signUp(this.user).subscribe({
         next: (resp) => {
-          console.log(resp)
+          this._router.navigate(["/home"])
         },
         error: (err) => {
           if (err.error.error.message === "EMAIL_EXISTS")
