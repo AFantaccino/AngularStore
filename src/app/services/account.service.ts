@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 
@@ -24,21 +24,19 @@ export class AccountService {
   constructor(private _http: HttpClient) {
 
     if (this.token) {
-      if (!this.token)
-        localStorage.removeItem(this._tokenName)
-      else {
         this.retrieveUsetData().subscribe({
           next: (resp) => {
-
             const user = new User(
               resp.users[0].email,
               resp.users[0].localId,
             )
 
             this._loggedUser$.next(user)
+          },
+          error: (err:HttpErrorResponse) => {
+            localStorage.removeItem(this._tokenName)
           }
         })
-      }
     }
   }
 

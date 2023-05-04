@@ -1,5 +1,6 @@
 export interface IAuthResponse {
     idToken: string,
     email: string,
-    localId: string
+    localId: string,
+    expiresIn: string,
 }
